@@ -1,0 +1,9 @@
+| Pantalla TFT | ESP32 WROOM                                       |
+| ------------ | ------------------------------------------------- |
+| **VCC**      | 3.3V                                              |
+| **GND**      | GND                                               |
+| **SDA**      | GPIO23 (MOSI)                                     |
+| **SCK**      | GPIO18 (SCK)                                      |
+| **DC**       | GPIO16                                            |
+| **RES**      | GPIO17                                            |
+| **BLK**      | 3.3V (o a un pin PWM si quieres controlar brillo) |

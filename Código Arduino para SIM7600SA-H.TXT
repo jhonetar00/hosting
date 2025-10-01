@@ -1,0 +1,54 @@
+// ==================== Configuración SIM7600 ====================
+#define RXD2 16   // ESP32 RX2 <- SIM7600 TX
+#define TXD2 17   // ESP32 TX2 -> SIM7600 RX
+
+String respuesta = "";
+
+// Función para enviar comandos AT
+void enviarComando(String cmd, int tiempo) {
+  Serial2.println(cmd);
+  delay(tiempo);
+  while (Serial2.available()) {
+    char c = Serial2.read();
+    respuesta += c;
+  }
+  Serial.println(respuesta); // mostrar en Monitor Serial
+}
+
+// ==================== Setup ====================
+void setup() {
+  Serial.begin(115200);        // Monitor Serial
+  Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2); // SIM7600 en Serial2
+
+  Serial.println("Iniciando SIM7600...");
+
+  delay(3000);
+
+  // Probar comunicación
+  enviarComando("AT", 1000);
+
+  // Información del módulo
+  enviarComando("ATI", 1000);
+
+  // Estado de red
+  enviarComando("AT+CREG?", 1000);
+
+  // Señal GSM
+  enviarComando("AT+CSQ", 1000);
+
+  // Activar GPS
+  enviarComando("AT+CGPS=1,1", 2000);
+}
+
+// ==================== Loop ====================
+void loop() {
+  // Consultar señal GSM
+  respuesta = "";
+  enviarComando("AT+CSQ", 1000);
+
+  // Consultar coordenadas GPS
+  respuesta = "";
+  enviarComando("AT+CGPSINFO", 2000);
+
+  delay(5000); // refresco cada 5s
+}

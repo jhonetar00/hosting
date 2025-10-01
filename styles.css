@@ -1,0 +1,26 @@
+/* General */
+body { font-family:'Roboto', sans-serif; margin:0; padding:0; background:#f8f9fa; overflow-x:hidden;}
+#particleCanvas {position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;}
+
+/* Sidebar */
+.sidebar {width:250px; height:100vh; background:#1e1e2f; color:#fff; padding:10px; position:fixed; top:0; left:0; overflow-y:auto;}
+.sidebar .nav-link {color:#ccc; display:flex; align-items:center; padding:10px 15px; margin-bottom:4px; border-radius:5px;}
+.sidebar .nav-link:hover, .sidebar .nav-link.active {background:#343454; color:#fff;}
+.logo-small{width:50px;height:50px;object-fit:cover;}
+#main-content{margin-left:250px; padding:20px; transition:all 0.3s;}
+
+/* Topbar */
+.topbar {background:#fff; padding:10px 20px; border-radius:5px; border-bottom:1px solid #ddd; margin-bottom:20px;}
+
+/* Monimar panels */
+#monimarPanels{display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:15px;}
+.monimar-panel{background:#fff; padding:10px; border-radius:8px; height:300px; position:relative; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.monimar-panel canvas{width:100%!important; height:100%!important;}
+
+/* Dark mode */
+body.dark-mode{background:#121212; color:#e0e0e0;}
+body.dark-mode .sidebar{background:#1b1b2f;}
+body.dark-mode .sidebar .nav-link{color:#bbb;}
+body.dark-mode .sidebar .nav-link:hover,.sidebar .nav-link.active{background:#343454;color:#fff;}
+body.dark-mode .topbar{background:#1a1a1a; border-color:#333;}
+body.dark-mode .monimar-panel{background:#1e1e2e; color:#e0e0e0;}

@@ -1,0 +1,5 @@
+﻿NTRIP Caster=ntrip.data.gnss.ga.gov.au
+NTRIP Caster Port=2101
+NTRIP Username=jhonetar00
+NTRIP Password=Abcd.2025
+NTRIP MountPoint=LAUT00FJI0

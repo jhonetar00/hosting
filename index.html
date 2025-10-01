@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Technology Server</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<!-- LOGIN -->
+<div id="login-container" class="container mt-5">
+  <h2 class="mb-4 text-center">Iniciar sesión</h2>
+  <div class="mb-3">
+    <input type="text" id="username" class="form-control" placeholder="Usuario" maxlength="20">
+  </div>
+  <div class="mb-3">
+    <input type="password" id="password" class="form-control" placeholder="Contraseña" maxlength="20">
+  </div>
+  <button id="login-btn" class="btn btn-primary w-100">Ingresar</button>
+  <p id="login-error" class="text-danger mt-2 d-none text-center">Usuario o contraseña incorrectos</p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard-container" class="d-flex d-none">
+
+  <!-- Sidebar -->
+  <nav id="sidebar" class="sidebar p-3 position-fixed">
+    <div class="text-center mb-4">
+      <img src="logo.png" class="rounded-circle mb-2 logo-small" alt="logo">
+      <h5 class="text-white mb-0">Technology Server</h5>
+      <p class="small text-muted" id="sidebar-username">user</p>
+    </div>
+    <ul class="nav flex-column" id="menu">
+      <li class="nav-item mb-2"><a class="nav-link active" data-target="dashboard"><span class="material-icons align-middle">dashboard</span> Inicio</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="user"><span class="material-icons align-middle">account_circle</span> Usuarios</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="bitacora"><span class="material-icons align-middle">book</span> Bitácora</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="chip"><span class="material-icons align-middle">sim_card</span> Chips</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="data"><span class="material-icons align-middle">gps_fixed</span> Datos Satelitales</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="datos-partners"><span class="material-icons align-middle">send</span> Datos Reenviados</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="documentos"><span class="material-icons align-middle">description</span> Documentos</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="equipos"><span class="material-icons align-middle">devices</span> Equipos</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="mantenimientos"><span class="material-icons align-middle">build</span> Mantenimientos</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="security"><span class="material-icons align-middle">construction</span> Servicios</a></li>
+      <li class="nav-item mb-2"><a class="nav-link" data-target="monimar"><span class="material-icons align-middle">water</span> Monimar</a></li>
+      <li class="nav-item mt-3"><button id="logout-btn" class="btn btn-sm btn-warning w-100">Cerrar sesión</button></li>
+    </ul>
+    <button id="sidebarToggle" class="btn btn-sm btn-info mt-2 w-100">Toggle Sidebar</button>
+  </nav>
+
+  <!-- Content -->
+  <div id="main-content" class="content flex-grow-1 ms-250">
+    <!-- Topbar -->
+    <div class="topbar d-flex justify-content-between align-items-center mb-3">
+      <div><span id="breadcrumb">Inicio</span></div>
+      <div class="d-flex align-items-center gap-3">
+        <div class="form-check form-switch m-0">
+          <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+          <label class="form-check-label small" for="darkModeSwitch">🌙</label>
+        </div>
+      </div>
+    </div>
+    <!-- View Root -->
+    <div id="view-root"></div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- App JS -->
+<script src="app.js"></script>
+</body>
+</html>

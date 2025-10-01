@@ -1,0 +1,108 @@
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7789.h>
+#include <SPI.h>
+
+// ==================== Configuración TFT ====================
+#define TFT_DC    2
+#define TFT_RST   4
+#define TFT_CS   -1   // muchas pantallas 1.3" no usan CS (conectado a GND)
+
+Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
+
+// ==================== Configuración SIM7600 ====================
+#define RXD2 16   // ESP32 RX2 <- SIM7600 TX
+#define TXD2 17   // ESP32 TX2 -> SIM7600 RX
+
+String respuesta = "";
+String lat = "----";
+String lon = "----";
+String signal = "--";
+
+// ==================== Funciones ====================
+void enviarComando(String cmd, int tiempo) {
+  Serial2.println(cmd);
+  delay(tiempo);
+  while (Serial2.available()) {
+    char c = Serial2.read();
+    respuesta += c;
+  }
+}
+
+void obtenerGSM() {
+  respuesta = "";
+  enviarComando("AT+CSQ", 1000); // nivel de señal
+  if (respuesta.indexOf("+CSQ:") != -1) {
+    int inicio = respuesta.indexOf("+CSQ:") + 6;
+    int fin = respuesta.indexOf(",", inicio);
+    signal = respuesta.substring(inicio, fin);
+  }
+}
+
+void obtenerGPS() {
+  respuesta = "";
+  enviarComando("AT+CGPSINFO", 2000);
+  if (respuesta.indexOf("+CGPSINFO:") != -1) {
+    int inicio = respuesta.indexOf(":") + 2;
+    String datos = respuesta.substring(inicio);
+    // formato: lat,N,lon,E,...
+    int coma1 = datos.indexOf(",");
+    int coma2 = datos.indexOf(",", coma1 + 1);
+    int coma3 = datos.indexOf(",", coma2 + 1);
+    int coma4 = datos.indexOf(",", coma3 + 1);
+
+    lat = datos.substring(0, coma1) + " " + datos.substring(coma1 + 1, coma2);
+    lon = datos.substring(coma2 + 1, coma3) + " " + datos.substring(coma3 + 1, coma4);
+  }
+}
+
+// ==================== Setup ====================
+void setup() {
+  Serial.begin(115200);        // Monitor Serial
+  Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2); // SIM7600 en Serial2
+
+  // Inicializar pantalla TFT
+  tft.init(240, 240, SPI_MODE2);
+  tft.setRotation(0);
+  tft.fillScreen(ST77XX_BLACK);
+  tft.setTextColor(ST77XX_GREEN);
+  tft.setTextSize(2);
+  tft.setCursor(10, 10);
+  tft.println("ESP32 + SIM7600");
+
+  delay(2000);
+
+  // Encender GPS del SIM7600
+  enviarComando("AT+CGPS=1,1", 2000);
+}
+
+// ==================== Loop ====================
+void loop() {
+  obtenerGSM();
+  obtenerGPS();
+
+  // Mostrar en TFT
+  tft.fillScreen(ST77XX_BLACK);
+
+  tft.setCursor(10, 20);
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println("GSM Senal:");
+  tft.setCursor(10, 40);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.println(signal);
+
+  tft.setCursor(10, 80);
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println("Lat:");
+  tft.setCursor(10, 100);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.println(lat);
+
+  tft.setCursor(10, 140);
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println("Lon:");
+  tft.setCursor(10, 160);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.println(lon);
+
+  delay(5000); // refresco cada 5 segundos
+}
